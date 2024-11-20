@@ -2,6 +2,7 @@ import sys
 import numpy as np
 import os
 import heapq
+import networkx as nx
 
 matrix = None
 algo = 0
@@ -13,7 +14,8 @@ def Djisktra(arr):
     result_matrix = np.zeros((len(arr),len(arr)), dtype=object) # Matrice des distances des plus-court chemin
     for i in range(nb_nodes):
         shortest_dist = sten(i, arr) # Pour chaque noeud, cette fonction va nous donner un vecteur contenant les distances avec chaque noeud
-        #print(shortest_dist)
+        print(shortest_dist)
+        print(i)
         result_matrix[i] = np.matrix(shortest_dist)
     return result_matrix
 
@@ -54,19 +56,33 @@ def Floyd_Warshall(arr):
 
 if __name__ == '__main__':
     arr = np.loadtxt('data.csv', delimiter=",")
+    arr2 = arr.copy()
+    arr[arr == 0] = 10 ** 12
+    np.fill_diagonal(arr, 0)
     matrix_g = np.asmatrix(arr) #convertir np.array en np.matrix pour respecter la signature
+    print(matrix_g)
     print("By default, the shortest path of every pair will be calculated using Djisktra, Bellman-Ford and "
           "Floyd_Warshall")
 
     print("Djiskstra algorithm array :")
     a = Djisktra(arr)
-    print(Djisktra(arr))
-    print("Bellman_Ford algorithm array :")
+    print(a)
+
+    G = nx.from_numpy_matrix(np.array(arr), create_using=nx.DiGraph)
+    shortest_path_matrix = dict(nx.all_pairs_dijkstra_path_length(G))
+
+    # Conversion des résultats en matrice pour comparer
+    validated_matrix = np.zeros((len(arr), len(arr)), dtype=int)
+    for i in range(len(arr)):
+        for j in range(len(arr)):
+            validated_matrix[i, j] = shortest_path_matrix[i][j]
+            
+    #print("Bellman_Ford algorithm array :")
     b = Bellman_Ford(arr)
-    print(Bellman_Ford(arr))
-    print("Floyd_Warshall algorithm array :")
+    #print(Bellman_Ford(arr))
+    #print("Floyd_Warshall algorithm array :")
     c = Floyd_Warshall(matrix_g)
-    print(Floyd_Warshall(matrix_g))
+    #print(Floyd_Warshall(matrix_g))
 
     #if np.array_equal(a, b) and np.array_equal(a, c):
     #    print("All algorithms calculated the same shortest paths")
