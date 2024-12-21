@@ -4,7 +4,7 @@ import heapq
 
 # in : matrice d'adjacence d'un graphe
 # out : matrice d'adjacence contenant les distances des plus court chemin entre un noeud et les autres noeuds du graphe
-def Djisktra(matrix: np.ndarray):
+def Djisktra(matrix):
     nb_nodes = len(matrix)
     result_matrix = np.zeros(
         (len(matrix), len(matrix)), dtype=int
@@ -61,7 +61,7 @@ def sten(source, adjacence_matrix):
     return stnd
 
 
-def Bellman_Ford(matrix: np.ndarray):
+def Bellman_Ford(matrix):
     """
     L'algorithme fonctionne en itérant sur les arêtes du graphe et en relaxant
     (mettant à jour) les distances à chaque noeud. L'algorithme
@@ -91,7 +91,7 @@ def Bellman_Ford(matrix: np.ndarray):
     return result_matrix
 
 
-def Floyd_Warshall(matrix: np.ndarray):
+def Floyd_Warshall(matrix):
     """
     L'algorithme fonctionne en itérant sur tous les noeuds intermédiaires possibles
     (k) et en vérifiant, pour chaque paire de noeuds (i, j), si un chemin passant
@@ -132,34 +132,13 @@ def compare_algorithms(bellman: np.ndarray, djisktra: np.ndarray, floyd: np.ndar
             )
 
 
-if __name__ == "__main__":
-    arr = np.loadtxt("data.csv", delimiter=",", dtype=int)
-    arr[arr == 0] = 10**12
-    np.fill_diagonal(arr, 0)
-    print(
-        "By default, the shortest path of every pair will be calculated using Djisktra, Bellman-Ford and "
-        "Floyd_Warshall"
-    )
+def print_matrix(matrix):
+    for row in matrix:
+        row_print = []
+        for x in row:
+            if x == 10**12:
+                row_print.append("∞")
+            else:
+                row_print.append(x)
 
-    print("Djiskstra algorithm array :")
-    a = Djisktra(arr.copy())
-    print(a)
-
-    print("Bellman_Ford algorithm array :")
-    b = Bellman_Ford(arr.copy())
-    print(b)
-    print("Floyd_Warshall algorithm array :")
-    c = Floyd_Warshall(arr)
-    print(c)
-
-    are_equals, failed = compare_algorithms(b, a, c)
-    if are_equals:
-        print("The 3 implementations yield the same results")
-    elif failed == "djisktra - floyd":
-        print("The djisktra and floyd results aren't the same")
-        print("Djisktra: \n", a)
-        print("Floyd: \n", c)
-    else:
-        print("The djisktra and bellman results aren't the same")
-        print("Bellman: \n", b)
-        print("Djisktra: \n", a)
+        print(", ".join(map(str, row_print)))
