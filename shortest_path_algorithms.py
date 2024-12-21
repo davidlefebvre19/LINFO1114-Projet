@@ -20,15 +20,9 @@ def Djisktra(matrix: np.ndarray):
 
 
 def sten(source, adjacence_matrix):
-    stnd = np.zeros(
-        len(adjacence_matrix), dtype="int"
-    )  # Vecteur contenant les distances avec les autres noeuds (STND: source to node distance)
-    stnd.fill(
-        10**12
-    )  # Les valeurs des distances sont initialisées à la valur symbolique "Infinity" (concept clef: aucune valeur n'est supérieure à celle-ci) mais à 10**12 dans notre algorithme (directive des consignes)
-    visited_nodes = np.zeros(
-        len(adjacence_matrix), dtype="int"
-    )  # Vecteur contenant les noeuds qui ont été visités (0 : non-visité, 1 : visité)
+    stnd = np.zeros(len(adjacence_matrix), dtype="int")  # Vecteur contenant les distances avec les autres noeuds (STND: source to node distance)
+    stnd.fill(10**12) # Les valeurs des distances sont initialisées à la valur symbolique "Infinity" (concept clef: aucune valeur n'est supérieure à celle-ci) mais à 10**12 dans notre algorithme (directive des consignes)
+    visited_nodes = np.zeros(len(adjacence_matrix), dtype="int")  # Vecteur contenant les noeuds qui ont été visités (0 : non-visité, 1 : visité)
     stnd[source] = 0  # Distance entre la source et la source = 0
     iter = 0
     while iter < len(adjacence_matrix):  # On itère n fois, n = nombre de noeuds
@@ -38,14 +32,8 @@ def sten(source, adjacence_matrix):
         for i in range(len(adjacence_matrix)):
             if visited_nodes[i] == 0:  # Si le noeud n'a pas encore été visité...
                 heapq.heappush(heap, (stnd[i], i))  # ... il est rajouté dans la heap
-        next_node = heapq.heappop(
-            heap
-        )[
-            1
-        ]  # Nous prenons l'index du noeud correspondant à celui le plus proche de la source
-        visited_nodes[next_node] = (
-            1  # Ce noeud sera "visité" donc la valeur associée au noeud de la liste visited_nodes est actualisée à 1
-        )
+        next_node = heapq.heappop(heap)[1]  # Nous prenons l'index du noeud correspondant à celui le plus proche de la source
+        visited_nodes[next_node] = (1)# Ce noeud sera "visité" donc la valeur associée au noeud de la liste visited_nodes est actualisée à 1
         # Calcul du vecteur des distances
         for i in range(len(adjacence_matrix)):
             if (
