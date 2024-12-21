@@ -1,5 +1,5 @@
 from shortest_path_algorithms import (
-    Djisktra,
+    Djikstra,
     Floyd_Warshall,
     Bellman_Ford,
     print_matrix,
@@ -21,7 +21,7 @@ def main():
     print()
 
     print("Matrice de distances via Djisktra :")
-    a = Djisktra(matrix.copy())
+    a = Djikstra(matrix.copy())
     print_matrix(a)
     print()
 

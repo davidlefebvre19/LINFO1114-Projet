@@ -32,7 +32,7 @@ def dijkstra(adj, src):
     return L
 
 
-def all_pairs_shortest_paths(adj):
+def Djikstra(adj):
     # Construire la matrice des plus courts chemins pour toutes les paires de sommets
     n = len(adj)
     D = np.zeros_like(adj)
@@ -55,6 +55,6 @@ if __name__ == "__main__":
     np.fill_diagonal(arr, 0)  # La diagonale représente les distances nulles
 
     # Calculer la matrice des plus courts chemins
-    shortest_paths = all_pairs_shortest_paths(arr)
+    shortest_paths = Djikstra(arr)
     print("Matrice des plus courts chemins :")
     print(shortest_paths)
