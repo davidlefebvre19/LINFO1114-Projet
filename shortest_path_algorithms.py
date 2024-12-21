@@ -8,11 +8,11 @@ def djikstra_one_node(adj, src):
     # Initialisation
     n = len(adj)
     S = []  # Ensemble des sommets traités
-    L = [10 ** 12] * n  # Labels de distance initialisés à un grand nombre
-    L[src] = 0  # La distance au sommet source est 0
+    L = [10 ** 12] * n  # Max int équivalent au infinity
+    L[src] = 0  # Distance entre le node et lui même initialisé à nul
 
     while len(S) != n:
-        # Trouver u : sommet non traité avec le coût minimal
+        # Trouver le node u (prochain node visité) à chaque itération L_k
         u = None
         u_cost = 10 ** 12
         for idx, curr in enumerate(L):
@@ -20,18 +20,16 @@ def djikstra_one_node(adj, src):
                 u = idx
                 u_cost = curr
 
-        # Ajouter u à S
         if u is None:
-            break  # Tous les sommets accessibles ont été traités
-        S.append(u)
+            break  # Cas ou tt les sommet on été visités (ne devrait normalement pas être exécuté)
+        S.append(u) # Ajout du node à visiter u dans la liste des nodes visités S
 
-        # Mettre à jour les labels des voisins de u
+        # Mis à jour des labels de chacun des nodes : on update la distance des nodes qui sont maintenant potentiellement accessibles étant donné u visité
         for idx in range(n):
-            if idx not in S and adj[u][idx] != 10 ** 12:
-                # Vérifier si un chemin plus court est trouvé
-                if L[idx] > L[u] + adj[u][idx]:
+            if idx not in S and adj[u][idx] != 10 ** 12: # On vérifie si un nouveau node est accessible depuis u via la matrice d'adjacence initiale
+                if L[idx] > L[u] + adj[u][idx]: # si la distance depuis l'origine + distance u,v est plus courte que celle initialement labelisée, un plous court chemin est donc trouvé et répertorié sur L
                     L[idx] = L[u] + adj[u][idx]
-                    
+
     return L
 
 
@@ -40,7 +38,8 @@ def Djikstra(adj):
     n = len(adj)
     D = np.zeros_like(adj)
     for src in range(n):
-        # Calculer les distances à partir du sommet src
+        # Calculer les distances à partir du sommet src 
+        # l'astuce est que le vecteur L final produit par Djikstra correspond au vecteur colonne de la matrice d'adjacence des plus court chemin
         L = djikstra_one_node(adj, src)
         for dest in range(n):
             D[src][dest] = L[dest]
